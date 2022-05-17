@@ -55,13 +55,17 @@ class CsvUtils
      * @param string $filePath The path of the created csv file
      * @param string $separator The separator of the csv file
      * @param bool $header If the file has a header or not. If true, the header is generated with index keys of the data array
-     * @return array
+     * @return void
      */
-    public static function writeCsv(array $data, string $filePath, string $separator = ';', bool $header = false): array
+    public static function writeCsv(array $data, string $filePath, string $separator = ';', bool $header = false): void
     {
         $fp = fopen($filePath, 'w');
 
-        foreach ($list as $fields) {
+        foreach ($data as $fields) {
+            if ($header) {
+                fputcsv($fp, array_keys($fields), $separator);
+                $header = false;
+            }
             fputcsv($fp, $fields, $separator);
         }
 
